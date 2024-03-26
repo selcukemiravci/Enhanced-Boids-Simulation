@@ -12,15 +12,7 @@ predators-own [
   predator-gain-from-prey  ;; energy gained by predators from eating prey
 ]
 
-globals [
-  scale                 ;; scale for adjusting movement
-  predator-reproduce    ;; reproduction rate for predators
-  prey-reproduce        ;; reproduction rate for preys (new variable)
-  max-predators         ;; maximum number of predators (moved to globals)
-    ;; Tree and leaf variables
-  leaf-energy-gain  ;; Energy gained by consuming a leaf
 
-]
 
 to setup
   clear-all
@@ -69,7 +61,7 @@ to go
   ]
   ask preys [
     flock
-    set energy energy - 0.  ;; Energy depletion for preys, slower than predators
+    set energy energy - 1  ;; Energy depletion for preys, slower than predators
     death
     reproduce-preys  ;; New procedure for prey reproduction
     search-for-leaves  ;; Moved inside to ensure only active preys execute this
@@ -78,21 +70,33 @@ to go
     display
   tick
 end
-
 to setup-trees
-  ;; Example initializations for the base of the tree
+  ;; Base of the tree starts slightly above the ground
   let init-x 0
   let init-y 0
-  let init-z 0
+  let init-z 3  ;; Base z-coordinate slightly above the world's midpoint for visual effect
 
-  create-leaves 100 [  ;; Create 100 leaves
-    ;; Position leaves relative to the base point with some random variance to simulate a tree
-    setxyz init-x + random-float 20 - 10  ;; Adjust the range for random placement around the base
-           init-y + random-float 20 - 10
-           init-z + random-float 10  ;; Assuming you want leaves to be above the base, adjust as needed
-    set shape "leaf"
-    set color blue  ;; You mentioned blue, but you might consider green for a more natural look
-    set size 1  ;; Adjust the size as needed for visibility
+  ;; Predefined color list for leaves
+  let colors [red orange yellow green blue violet]
+
+  ;; Adjust the distribution of leaves to ensure the tree is visually centered.
+  create-leaves 256 [
+    ;; Randomly position leaves in a spherical distribution
+    let r 10  ;; Radius around the tree base for leaf distribution
+    let theta random-float 360  ;; Angle around the z-axis for horizontal spread
+    let phi acos (2 * random-float 1 - 1)  ;; Angle from vertical for even distribution
+
+    ;; Convert spherical coordinates to Cartesian for leaf placement
+    let x r * sin phi * cos theta
+    let y r * sin phi * sin theta
+    let z r * cos phi + init-z  ;; Add init-z to vertically center leaves around the base
+
+    ;; Set leaf properties and position
+    setxyz init-x + x init-y + y z
+    set shape "line"  ;; Simple line shape for leaves
+    ;; Assign a random color from the predefined list
+    set color one-of colors
+    set size 0.5  ;; Leaf size, adjust as needed
   ]
 end
 
@@ -349,7 +353,7 @@ population
 population
 0
 200.0
-78.0
+48.0
 1
 1
 NIL
@@ -490,17 +494,17 @@ population-predator
 population-predator
 0
 200.0
-186.0
+101.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-95
-369
-440
-402
+152
+400
+497
+433
 initial-predator-energy
 initial-predator-energy
 0
