@@ -15,11 +15,9 @@ predators-own [
 globals [
   scale                 ;; scale for adjusting movement
   predator-reproduce    ;; reproduction rate for predators
-  prey-reproduce        ;; reproduction rate for preys (new variable)
-  max-predators         ;; maximum number of predators (moved to globals)
-    ;; Tree and leaf variables
-  leaf-energy-gain  ;; Energy gained by consuming a leaf
-
+  prey-reproduce        ;; reproduction rate for preys
+  max-predators         ;; maximum number of predators
+  leaf-energy-gain      ;; Energy gained by consuming a leaf
 ]
 
 to setup
@@ -28,11 +26,14 @@ to setup
   set predator-reproduce 5
   set prey-reproduce 5      ;; Set the prey reproduction rate (e.g., 5%)
   set max-predators 5       ;; Initialize max-predators
+  set unlimited-energy? false  ;; Initialize to false; can be toggled on/off as needed
+  let initial-energy (ifelse-value unlimited-energy? [10000] [200])
+
   ;; Create predators
   create-predators population-predator [  ;; Assuming an initial population of 10 predators
     set color red
     set size 2
-    set energy 100
+    set energy initial-energy
     set predator-gain-from-prey 20  ;; Setting gain from eating prey
     setxyz random-xcor random-ycor random-zcor
     right random-float 360
@@ -44,7 +45,7 @@ to setup
   create-preys population [  ;; Assuming an initial population of 100 preys
     set color green
     set size 1.5
-    set energy 100   ;; Preys start with less energy
+    set energy initial-energy
     setxyz random-xcor random-ycor random-zcor
     right random-float 360
     tilt-up asin (1.0 - random-float 2.0)
@@ -60,51 +61,81 @@ end
 to go
   ask predators [
     flock
-    set energy energy - 1  ;; Energy depletion for predators
+    if not unlimited-energy? [
+      ;; Deplete energy only if unlimited-energy? is false
+      set energy energy - 1
+    ]
     eat-prey
     death
     reproduce-predators
-     search-for-leaves  ;; Moved inside to ensure only active preys execute this
+    search-for-leaves
     fd scale / 2
   ]
   ask preys [
     flock
-    set energy energy - 1  ;; Energy depletion for preys, slower than predators
+    if not unlimited-energy? [
+      ;; Deplete energy only if unlimited-energy? is false
+      set energy energy - 1
+    ]
     death
-    reproduce-preys  ;; New procedure for prey reproduction
-    search-for-leaves  ;; Moved inside to ensure only active preys execute this
+    reproduce-preys
+    search-for-leaves
     fd scale / 2
   ]
-    display
+  display
   tick
 end
 
+
 to setup-trees
-  ;; Example initializations for the base of the tree
+  ;; Base of the tree starts slightly above the ground
   let init-x 0
   let init-y 0
-  let init-z 0
+  let init-z 3  ;; Base z-coordinate slightly above the world's midpoint for visual effect
 
-  create-leaves 100 [  ;; Create 100 leaves
-    ;; Position leaves relative to the base point with some random variance to simulate a tree
-    setxyz init-x + random-float 20 - 10  ;; Adjust the range for random placement around the base
-           init-y + random-float 20 - 10
-           init-z + random-float 10  ;; Assuming you want leaves to be above the base, adjust as needed
-    set shape "leaf"
-    set color blue  ;; You mentioned blue, but you might consider green for a more natural look
-    set size 1  ;; Adjust the size as needed for visibility
+  ;; Predefined color list for leaves
+  let colors [ yellow white pink ]
+
+  ;; Adjust the distribution of leaves to ensure the tree is visually centered.
+  create-leaves 256 [
+    ;; Randomly position leaves in a spherical distribution
+    let r 10  ;; Radius around the tree base for leaf distribution
+    let theta random-float 360  ;; Angle around the z-axis for horizontal spread
+    let phi acos (2 * random-float 1 - 1)  ;; Angle from vertical for even distribution
+
+    ;; Convert spherical coordinates to Cartesian for leaf placement
+    let x r * sin phi * cos theta
+    let y r * sin phi * sin theta
+    let z r * cos phi + init-z  ;; Add init-z to vertically center leaves around the base
+
+    ;; Set leaf properties and position
+    setxyz init-x + x init-y + y z
+    set shape "line"  ;; Simple line shape for leaves
+    ;; Assign a random color from the predefined list
+    set color one-of colors
+    set size 1  ;; Leaf size, adjust as needed
   ]
 end
 
 
 to eat-prey
-  ;; Ensure predators only target preys
   let target-prey one-of preys-here
   if target-prey != nobody [
-    ask target-prey [ die ]
-    set energy energy + predator-gain-from-prey
+    ifelse not unlimited-energy? [
+      ;; If unlimited-energy? is false, proceed as normal
+      ask target-prey [ die ]
+      set energy energy + predator-gain-from-prey
+    ][
+      ;; Define an alternative condition for predation under unlimited energy
+      ;; For example, you could still require physical proximity
+      if distance target-prey < 1 [ ; Adjust proximity threshold as needed
+        ask target-prey [ die ]
+        ;; Optionally adjust predator's energy or other stats here
+      ]
+    ]
   ]
 end
+
 
 to reproduce-predators
   if random-float 100 < predator-reproduce and count predators < max-predators [
@@ -118,15 +149,19 @@ to reproduce-predators
 end
 
 to reproduce-preys
-  if random-float 100 < prey-reproduce [
-    set energy (energy / 2)
-    hatch 1 [
-      rt random-float 360
-      fd 1
-      set energy [energy] of myself
+  if not unlimited-energy? [
+    if random-float 100 < prey-reproduce [
+      set energy (energy / 2)
+      hatch 1 [
+        rt random-float 360
+        fd 1
+        set energy [energy] of myself
+      ]
     ]
   ]
+  ;; Optionally, include logic for controlled reproduction even when unlimited energy is on
 end
+
 to flock  ;; Adjusted turtle procedure
   find-flockmates
   if any? flockmates [
@@ -176,7 +211,8 @@ to death  ; turtle procedure (i.e. wolf, sheep, and predator procedure)
   if energy < 0 [ die ]
 end
 to search-for-leaves
-  if energy < 30 [
+  ;; Agents search for and consume leaves only if unlimited energy is off and their energy is below a threshold
+  if not unlimited-energy? and energy < 30 [
     let nearest-leaf min-one-of leaves [distance myself]
     if nearest-leaf != nobody and distance nearest-leaf < 1 [ ; Ensure proximity for consumption
       move-to nearest-leaf
@@ -186,9 +222,12 @@ to search-for-leaves
 end
 
 to eat-leaf [target-leaf]  ;; Turtle procedure, expects a leaf as input
- ; ask target-leaf [ die ]  ;; Remove the leaf from the model
-  set energy energy + leaf-energy-gain  ;; Increase energy of the agent
+  if not unlimited-energy? [
+    ask target-leaf [ die ]  ; Leaf is consumed and removed from the simulation
+    set energy energy + leaf-energy-gain  ; Increase energy of the agent
+  ]
 end
+
 ;;; SEPARATE
 
 to separate  ;; turtle procedure
@@ -349,7 +388,7 @@ population
 population
 0
 200.0
-78.0
+145.0
 1
 1
 NIL
@@ -364,7 +403,7 @@ vision
 vision
 0
 10.0
-7.0
+10.0
 0.5
 1
 scaled patches
@@ -379,7 +418,7 @@ minimum-separation
 minimum-separation
 0
 5
-5.0
+0.0
 0.25
 1
 scaled patches
@@ -394,7 +433,7 @@ max-align-turn
 max-align-turn
 0
 20
-5.25
+3.75
 0.25
 1
 degrees
@@ -409,7 +448,7 @@ max-cohere-turn
 max-cohere-turn
 0
 20
-5.0
+0.0
 0.25
 1
 degrees
@@ -424,7 +463,7 @@ max-separate-turn
 max-separate-turn
 0
 20
-1.0
+0.0
 0.25
 1
 degrees
@@ -490,25 +529,10 @@ population-predator
 population-predator
 0
 200.0
-186.0
+29.0
 1
 1
 NIL
-HORIZONTAL
-
-SLIDER
-95
-369
-440
-402
-initial-predator-energy
-initial-predator-energy
-0
-100
-50.0
-1
-1
-initial-predator-energy
 HORIZONTAL
 
 PLOT
@@ -549,6 +573,17 @@ PENS
 "Prey Energy" 1.0 0 -13840069 true "" "if any? preys [\n  plot mean [energy] of preys\n]\n"
 "Predator Energy" 1.0 0 -5298144 true "" "if any? predators [\n  plot mean [energy] of predators\n]\n"
 "Leaf Supply" 1.0 0 -7500403 true "" "plot count leaves"
+
+SWITCH
+36
+353
+206
+386
+unlimited-energy?
+unlimited-energy?
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?

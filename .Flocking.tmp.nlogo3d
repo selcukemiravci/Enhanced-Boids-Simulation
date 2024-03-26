@@ -94,7 +94,7 @@ to setup-trees
   let init-z 3  ;; Base z-coordinate slightly above the world's midpoint for visual effect
 
   ;; Predefined color list for leaves
-  let colors [red orange yellow green blue violet]
+  let colors [ yellow white pink ]
 
   ;; Adjust the distribution of leaves to ensure the tree is visually centered.
   create-leaves 256 [
@@ -113,7 +113,7 @@ to setup-trees
     set shape "line"  ;; Simple line shape for leaves
     ;; Assign a random color from the predefined list
     set color one-of colors
-    set size 0.5  ;; Leaf size, adjust as needed
+    set size 1  ;; Leaf size, adjust as needed
   ]
 end
 
@@ -211,7 +211,7 @@ to death  ; turtle procedure (i.e. wolf, sheep, and predator procedure)
   if energy < 0 [ die ]
 end
 to search-for-leaves
-  ;; Only search for leaves if unlimited energy is off, or impose additional conditions
+  ;; Agents search for and consume leaves only if unlimited energy is off and their energy is below a threshold
   if not unlimited-energy? and energy < 30 [
     let nearest-leaf min-one-of leaves [distance myself]
     if nearest-leaf != nobody and distance nearest-leaf < 1 [ ; Ensure proximity for consumption
@@ -221,11 +221,10 @@ to search-for-leaves
   ]
 end
 
-
 to eat-leaf [target-leaf]  ;; Turtle procedure, expects a leaf as input
   if not unlimited-energy? [
-    ;; ask target-leaf [ die ]  ;; Uncomment if you want leaves to be consumed
-    set energy energy + leaf-energy-gain  ;; Increase energy of the agent
+    ask target-leaf [ die ]  ; Leaf is consumed and removed from the simulation
+    set energy energy + leaf-energy-gain  ; Increase energy of the agent
   ]
 end
 
@@ -389,7 +388,7 @@ population
 population
 0
 200.0
-48.0
+145.0
 1
 1
 NIL
@@ -530,7 +529,7 @@ population-predator
 population-predator
 0
 200.0
-17.0
+29.0
 1
 1
 NIL
@@ -597,7 +596,7 @@ SWITCH
 386
 unlimited-energy?
 unlimited-energy?
-0
+1
 1
 -1000
 
