@@ -69,7 +69,7 @@ to go
   ]
   ask preys [
     flock
-    set energy energy - 1  ;; Energy depletion for preys, slower than predators
+    set energy energy - 0.  ;; Energy depletion for preys, slower than predators
     death
     reproduce-preys  ;; New procedure for prey reproduction
     search-for-leaves  ;; Moved inside to ensure only active preys execute this
