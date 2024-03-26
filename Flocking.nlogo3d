@@ -63,7 +63,7 @@ to go
     flock
     if not unlimited-energy? [
       ;; Deplete energy only if unlimited-energy? is false
-      set energy energy - 1
+      set energy energy - 0.5
     ]
     eat-prey
     death
@@ -75,7 +75,7 @@ to go
     flock
     if not unlimited-energy? [
       ;; Deplete energy only if unlimited-energy? is false
-      set energy energy - 1
+      set energy energy - 0.5
     ]
     death
     reproduce-preys
@@ -312,9 +312,6 @@ to pitch-at-most [turn max-turn]  ;; turtle procedure
         [ tilt-down max-turn ] ]
     [ tilt-up turn ]
 end
-
-
-; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
 0
@@ -346,10 +343,10 @@ ticks
 30.0
 
 BUTTON
-141
-59
-232
-92
+145
+122
+236
+155
 setup
 setup
 NIL
@@ -363,10 +360,10 @@ NIL
 1
 
 BUTTON
-242
-60
-335
-93
+246
+123
+339
+156
 go
 go
 T
@@ -388,16 +385,16 @@ population
 population
 0
 200.0
-145.0
+200.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-38
+35
 244
-226
+223
 277
 vision
 vision
@@ -418,7 +415,7 @@ minimum-separation
 minimum-separation
 0
 5
-0.0
+2.25
 0.25
 1
 scaled patches
@@ -433,7 +430,7 @@ max-align-turn
 max-align-turn
 0
 20
-3.75
+15.0
 0.25
 1
 degrees
@@ -469,57 +466,6 @@ max-separate-turn
 degrees
 HORIZONTAL
 
-BUTTON
-79
-116
-196
-149
-follow turtle 0
-follow turtle 0
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-373
-118
-498
-151
-watch big flock
-watch one-of turtles with-max [ count flockmates ]
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-BUTTON
-221
-117
-346
-150
-follow big flock
-follow one-of turtles with-max [ count flockmates ]\n
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 SLIDER
 40
 297
@@ -529,7 +475,7 @@ population-predator
 population-predator
 0
 200.0
-29.0
+35.0
 1
 1
 NIL
@@ -575,10 +521,10 @@ PENS
 "Leaf Supply" 1.0 0 -7500403 true "" "plot count leaves"
 
 SWITCH
-36
-353
-206
-386
+48
+354
+218
+387
 unlimited-energy?
 unlimited-energy?
 1

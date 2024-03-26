@@ -63,7 +63,7 @@ to go
     flock
     if not unlimited-energy? [
       ;; Deplete energy only if unlimited-energy? is false
-      set energy energy - 1
+      set energy energy - 0.5
     ]
     eat-prey
     death
@@ -75,7 +75,7 @@ to go
     flock
     if not unlimited-energy? [
       ;; Deplete energy only if unlimited-energy? is false
-      set energy energy - 1
+      set energy energy - 0.5
     ]
     death
     reproduce-preys
@@ -314,7 +314,6 @@ to pitch-at-most [turn max-turn]  ;; turtle procedure
 end
 
 
-; See Info tab for full copyright and license.
 @#$#@#$#@
 GRAPHICS-WINDOW
 0
@@ -388,7 +387,7 @@ population
 population
 0
 200.0
-145.0
+200.0
 1
 1
 NIL
@@ -418,7 +417,7 @@ minimum-separation
 minimum-separation
 0
 5
-0.0
+2.25
 0.25
 1
 scaled patches
@@ -433,7 +432,7 @@ max-align-turn
 max-align-turn
 0
 20
-3.75
+15.0
 0.25
 1
 degrees
@@ -529,25 +528,10 @@ population-predator
 population-predator
 0
 200.0
-29.0
+35.0
 1
 1
 NIL
-HORIZONTAL
-
-SLIDER
-152
-400
-497
-433
-initial-predator-energy
-initial-predator-energy
-0
-100
-50.0
-1
-1
-initial-predator-energy
 HORIZONTAL
 
 PLOT
