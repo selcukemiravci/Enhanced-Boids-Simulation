@@ -415,7 +415,7 @@ minimum-separation
 minimum-separation
 0
 5
-2.25
+2.5
 0.25
 1
 scaled patches
@@ -430,7 +430,7 @@ max-align-turn
 max-align-turn
 0
 20
-15.0
+20.0
 0.25
 1
 degrees
@@ -445,7 +445,7 @@ max-cohere-turn
 max-cohere-turn
 0
 20
-0.0
+4.0
 0.25
 1
 degrees
@@ -460,7 +460,7 @@ max-separate-turn
 max-separate-turn
 0
 20
-0.0
+0.75
 0.25
 1
 degrees
@@ -475,17 +475,17 @@ population-predator
 population-predator
 0
 200.0
-35.0
+11.0
 1
 1
 NIL
 HORIZONTAL
 
 PLOT
-549
-17
-1107
-375
+553
+12
+935
+321
 populations
 Time
 Population
@@ -501,10 +501,10 @@ PENS
 "predators" 1.0 0 -5298144 true "" "plot count predators"
 
 PLOT
-548
-375
-1107
-696
+550
+320
+935
+596
 Energy Levels
 Time
 Energy Levels
