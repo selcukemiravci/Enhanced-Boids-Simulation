@@ -8,7 +8,8 @@ The model incorporates several agent behaviors: alignment, cohesion, and separat
 
 | Cohesion | Separation | Alignment |
 | :------: | :--------: | :-------: |
-| <img src="(https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/d26c0148-9d4f-4011-b1ab-f5c8b2cdc4f6" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/de164875-f4d5-4b03-9a89-721d2c306fc0" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/a200d502-6db3-456e-a54a-1c75503ebd7f" height="200" /> |
+| <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/6690d3ab-7065-478c-9be2-4b1850f8921b" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/de164875-f4d5-4b03-9a89-721d2c306fc0" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/a200d502-6db3-456e-a54a-1c75503ebd7f" height="200" /> |
+
 **Note:** For a demonstration of the Minimized Vision effect, see the corresponding GIF:  
 <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/f38dd6e6-c023-4f3e-97bc-50c382952b33" height="200" />
 
