@@ -6,6 +6,13 @@ This model simulates complex ecosystem dynamics within a three-dimensional envir
 
 The model incorporates several agent behaviors: alignment, cohesion, and separation to simulate flocking dynamics. Predators hunt prey to gain energy, while prey consume environmental resources (leaves) to survive. Agents possess a finite amount of energy that depletes with activity, influencing their survival and reproductive capabilities. The environment includes spatial boundaries that agents must navigate, creating a more dynamic interaction space.
 
+| Cohesion | Separation | Alignment |
+| :------: | :--------: | :-------: |
+| <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/43db6d86-72fe-487b-b221-c0f6de8a0cb0" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/cf4af4a5-daab-485a-9f78-40355b3c9960" height="200" /> | <img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/4080eea0-524c-463d-bb50-c93a6ef1554d" height="200" /> |
+
+**Note:** For a demonstration of the Minimized Vision effect, see the corresponding GIF:  
+<img src="https://github.com/selcukemiravci/Enhanced-Boids-Simulation/assets/53044008/f66622f2-c2b0-4b8c-b72f-338258d9a910" height="200" />
+
 ## HOW TO USE IT
 
 1. **Setup Button**: Initializes the simulation with the specified number of predators, prey, and environmental features.
