@@ -549,7 +549,6 @@ The model incorporates several agent behaviors: alignment, cohesion, and separat
 2. **Go Button**: Starts the simulation, allowing the agents to move according to the defined rules.
 
 **Sliders:**
-
 - **Population**: Adjusts the number of prey at the start of the simulation.
 - **Vision**: Sets the distance each agent can perceive its surroundings, affecting its interactions.
 - **Population-Predator**: Determines the initial number of predators.
@@ -588,11 +587,13 @@ This model utilizes NetLogo's 3D capabilities to simulate agent movement and int
 ## RELATED MODELS
 
 - **[Wolf Sheep Predation](https://ccl.northwestern.edu/netlogo/models/WolfSheepPredation)**: Similar predator-prey dynamics but in a simpler ecological model.
-- **[Flocking](https://www.netlogoweb.org/launch#http://ccl.northwestern.edu/netlogo/models/models/Sample%20Models/Biology/Flocking.nlogo)**: Basic behaviors of flock formation and movement dynamics.
+- **[Flocking(https://www.netlogoweb.org/launch#http://ccl.northwestern.edu/netlogo/models/models/Sample%20Models/Biology/Flocking.nlogo)]**: Basic behaviors of flock formation and movement dynamics.
 
 ## CREDITS AND REFERENCES
 
 I would like to extend my deepest gratitude to Dr. Omar Addam for attending the guest lecture and presenting his inspiring project on Boids simulation, which significantly influenced the development of my own project. I am also profoundly thankful to Professor Christian Jacob for his invaluable discussions and insights regarding this project and for his exceptional lectures, which have greatly enriched my understanding of the subject.
+
+### References: Bibliography
 
 - [NetLogo Flocking Model](https://www.netlogoweb.org/launch#http://ccl.northwestern.edu/netlogo/models/models/Sample%20Models/Biology/Flocking.nlogo)
 - [NetLogo 3D Tree Model](https://ccl.northwestern.edu/netlogo/models/TreeSimple3D)
